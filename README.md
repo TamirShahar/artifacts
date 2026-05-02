@@ -97,7 +97,7 @@ chmod -R 777 ./victim ./arn
 - The first two commands allow running Docker without `sudo`
 - The `chmod` ensures proper access for bind-mounted directories between host and containers
 
-Reboot the system (or log out and back in) for the changes to take effect.
+Reboot the system for the changes to take effect.
 
 ### Assumptions
 
