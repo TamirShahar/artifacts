@@ -87,10 +87,15 @@ We assume default system configuration. In particular, we assume that TCP epheme
 
 ## Setup
 
-### Clone
+### Download
+
+Download the repository as a ZIP archive from:
+
+https://anonymous.4open.science/r/artifacts_32489asadads1-12321asd-323sad123-08E3
+
+Extract the archive and enter the artifacts directory:
 
 ```bash
-git clone https://anonymous.4open.science/r/artifacts_32489asadads1-12321asd-323sad123-08E3
 cd artifacts
 ```
 
