@@ -150,7 +150,7 @@ This wrapper automatically:
 
 - Runs inside the correct container
 - Uses the correct user (in the victim: `victim_user` or `malicious_user`, as required)
-- Displays the active username at runtime
+- Displays the active username at runtime (for the victim container)
 
 To see all available commands:
 
