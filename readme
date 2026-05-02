@@ -1,3 +1,5 @@
+> **Note:** This README may not render properly in the anonymous repository view. We recommend viewing it in a Markdown renderer.
+
 # Network Attacks via Malicious Application (Docker Demonstration)
 
 This research demonstrates practical network attacks performed by an **unprivileged malicious application** running on the same host as a victim, in collaboration with an **Attacker Remote Node (ARN)**.
