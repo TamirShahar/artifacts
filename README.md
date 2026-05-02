@@ -123,7 +123,7 @@ chmod +x ./run.sh
 ### Build
 
 ```bash
-sudo ./run.sh build
+./run.sh build
 ```
 
 Builds the Docker images and starts all containers using `docker compose up`.
@@ -143,7 +143,7 @@ To simplify running the experiments across the different containers, we provide 
 All commands are executed via:
 
 ```bash
-sudo ./run.sh COMMAND
+./run.sh COMMAND
 ```
 
 This wrapper automatically:
@@ -155,7 +155,7 @@ This wrapper automatically:
 To see all available commands:
 
 ```bash
-sudo ./run.sh help
+./run.sh help
 ```
 
 ---
@@ -171,7 +171,7 @@ sudo ./run.sh help
 Terminal 1 (victim container, `malicious_user`):
 
 ```bash
-sudo ./run.sh cbpf
+./run.sh cbpf
 ```
 
 Builds a preprocessing table:
@@ -189,7 +189,7 @@ The malicious application uses cBPF leakage to infer ISNs and associate them wit
 Terminal 2 (victim container, `victim_user`):
 
 ```bash
-sudo ./run.sh http_client
+./run.sh http_client
 ```
 
 Runs the HTTP client as `victim_user` in the victim container.
@@ -200,7 +200,7 @@ If the malicious application or the ARN are not running, you should see the regu
 Terminal 1 (victim container, `malicious_user`):
 
 ```bash
-sudo ./run.sh tcp_main_cbpf
+./run.sh tcp_main_cbpf
 ```
 
 Runs the victim-side malicious logic as `malicious_user` in the victim container.
@@ -210,7 +210,7 @@ This process detects the victim connection source port, infers the expected ISN 
 Terminal 3 (ARN container):
 
 ```bash
-sudo ./run.sh tcp_inject
+./run.sh tcp_inject
 ```
 
 Runs the ARN application that injects crafted TCP packets into the connection.
@@ -218,7 +218,7 @@ Runs the ARN application that injects crafted TCP packets into the connection.
 Terminal 2 (victim container, `victim_user`):
 
 ```bash
-sudo ./run.sh http_client
+./run.sh http_client
 ```
 
 Triggers the HTTP request again.
@@ -237,7 +237,7 @@ hello from attacker
 Terminal 2 (victim container, `victim_user`):
 
 ```bash
-sudo ./run.sh http_client N
+./run.sh http_client N
 ```
 
 Runs the HTTP client `N` times (loop) as `victim_user` in the victim container.
@@ -253,7 +253,7 @@ Use this to automatically repeat the attack and observe success rate statistics 
 Terminal 1 (ARN container):
 
 ```bash
-sudo ./run.sh capture
+./run.sh capture
 ```
 
 Runs ISN capture from the ARN container.
@@ -263,7 +263,7 @@ The ARN captures SYN packets sent by the malicious application, extracts the ISN
 Terminal 2 (victim container, `malicious_user`):
 
 ```bash
-sudo ./run.sh ipoptions
+./run.sh ipoptions
 ```
 
 Runs IP Options preprocessing as `malicious_user` on the victim machine.
@@ -281,7 +281,7 @@ This step should take around 40 seconds.
 Terminal 3 (victim container, `victim_user`):
 
 ```bash
-sudo ./run.sh http_client
+./run.sh http_client
 ```
 
 Runs the HTTP client as `victim_user`.
@@ -292,7 +292,7 @@ If the malicious application or the ARN are not running, you should see the regu
 Terminal 2 (victim container, `malicious_user`):
 
 ```bash
-sudo ./run.sh tcp_main_ipoptions
+./run.sh tcp_main_ipoptions
 ```
 
 Runs the victim-side malicious logic as `malicious_user` in the victim container.
@@ -302,7 +302,7 @@ This process detects the victim connection source port, infers the expected ISN 
 Terminal 1 (ARN container):
 
 ```bash
-sudo ./run.sh tcp_inject
+./run.sh tcp_inject
 ```
 
 Runs the ARN application that injects crafted TCP packets into the connection.
@@ -310,7 +310,7 @@ Runs the ARN application that injects crafted TCP packets into the connection.
 Terminal 3 (victim container, `victim_user`):
 
 ```bash
-sudo ./run.sh http_client
+./run.sh http_client
 ```
 
 Triggers the HTTP request again.
@@ -331,7 +331,7 @@ hello from attacker
 Terminal 1 (victim container, `victim_user`):
 
 ```bash
-sudo ./run.sh resolve
+./run.sh resolve
 ```
 
 Resolves `example.com` from `victim_user` in the victim container.
@@ -345,7 +345,7 @@ Before the attack, it should resolve to:
 Terminal 2 (ARN container)::
 
 ```bash
-sudo ./run.sh dns_inject
+./run.sh dns_inject
 ```
 
 Runs the ARN application that injects forged DNS responses by brute-forcing the TXID.
@@ -353,7 +353,7 @@ Runs the ARN application that injects forged DNS responses by brute-forcing the 
 Terminal 3 (victim container, `malicious_user`):
 
 ```bash
-sudo ./run.sh dns_main
+./run.sh dns_main
 ```
 
 Runs the victim-side DNS cache poisoning logic as `malicious_user` in the victim container.
@@ -363,7 +363,7 @@ The malicious application triggers a DNS query, detects the source port used by 
 Terminal 1 (victim container, `victim_user`):
 
 ```bash
-sudo ./run.sh resolve
+./run.sh resolve
 ```
 
 Resolves `example.com` again.
@@ -382,7 +382,7 @@ You should see resolution to:
 Terminal 3 (victim container, `malicious_user`):
 
 ```bash
-sudo ./run.sh dns_main N
+./run.sh dns_main N
 ```
 
 Runs the DNS cache poisoning logic `N` times (loop) as `malicious_user` in the victim container.

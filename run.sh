@@ -70,7 +70,7 @@ case "$cmd" in
 		;;
 
 	resolve)
-		run_as_user victim_user victim "python -c \"import socket; print(socket.gethostbyname('example.com'))\""
+		run_as_user victim_user victim "python3 -c \"import socket; print(socket.gethostbyname('example.com'))\""
 		;;
 
 	sniff_victim_all)
