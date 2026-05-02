@@ -1,0 +1,14 @@
+options {
+    directory "/var/cache/bind";
+
+    listen-on { any; };
+    listen-on-v6 { none; };
+
+    recursion yes;
+    allow-query { any; };
+    allow-recursion { any; };
+    allow-query-cache { any; };
+
+    dnssec-validation no;
+    auth-nxdomain no;
+};

@@ -1,0 +1,72 @@
+services:
+  httpserver:
+    build: ./httpserver
+    container_name: httpserver
+    cap_add:
+      - NET_ADMIN
+    networks:
+      lan:
+        ipv4_address: 192.0.2.123
+
+  victim:
+    build: ./victim
+    container_name: victim
+    cgroup: host
+    dns:
+      - 127.0.0.53
+    command: ["/lib/systemd/systemd"]
+    privileged: true
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - ./victim:/artifact:rw
+    networks:
+      lan:
+        ipv4_address: 192.0.2.10
+
+  arn:
+    build: ./arn
+    container_name: arn
+    command: sleep infinity
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    volumes:
+      - ./arn:/artifact:rw
+    networks:
+      lan:
+        ipv4_address: 192.0.2.49
+
+  recursive_resolver:
+    build: ./dns_recursive
+    container_name: recursive_resolver
+    networks:
+      lan:
+        ipv4_address: 192.0.2.220
+
+  attacker_authoritative_nameserver:
+    build: ./dns_attacker_authoritative
+    container_name: attacker_authoritative_nameserver
+    cap_add:
+      - NET_ADMIN
+    networks:
+      lan:
+        ipv4_address: 192.0.2.70
+
+  real_authoritative_nameserver:
+    build: ./dns_real_authoritative
+    container_name: real_authoritative_nameserver
+    networks:
+      lan:
+        ipv4_address: 192.0.2.200
+
+networks:
+  lan:
+    internal: true
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.0.2.0/24

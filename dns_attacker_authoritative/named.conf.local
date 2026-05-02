@@ -1,0 +1,4 @@
+zone "attacker.test" {
+	type master;
+	file "/etc/bind/db.attacker.test";
+};

@@ -1,0 +1,18 @@
+$TTL 3600
+@   IN SOA localhost. root.localhost. (
+        2026050101 ; serial
+        3600       ; refresh
+        600        ; retry
+        604800     ; expire
+        3600 )     ; minimum
+
+@           IN NS    localhost.
+localhost.  IN A     127.0.0.1
+
+; Delegation to the real authoritative server
+example.com.    IN NS    ns.example.com.
+ns.example.com.  IN A     192.0.2.200
+
+; Delegation to the attacker authoritative server
+attacker.test.   IN NS    ns.attacker.test.
+ns.attacker.test. IN A    192.0.2.70
