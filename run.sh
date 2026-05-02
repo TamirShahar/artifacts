@@ -9,7 +9,7 @@ Commands:
 	build              Rebuild and start the full compose stack
 	stop               Stop all containers
 	http_client [N]    Run the HTTP client as `victim_user` in the victim container (N times for loop, default 1)
-	ping               Ping example.com as `victim_user` in the victim container
+	resolve            Resolve example.com as `victim_user` in the victim container
 	sniff_victim_all   Sniff all packets on the victim as `root` (numbered)
 	sniff_victim_syn   Sniff only SYN packets on the victim as `root` (numbered)
 	sniff_victim_dns   Sniff DNS packets on the victim as `root` (numbered)
@@ -69,8 +69,8 @@ case "$cmd" in
 		run_as_user victim_user victim "python3 /artifact/tcp_attack/client.py ${2:-}"
 		;;
 
-	ping)
-		run_as_user victim_user victim "ping -c 4 example.com"
+	resolve)
+		run_as_user victim_user victim "python -c \"import socket; print(socket.gethostbyname('example.com'))\""
 		;;
 
 	sniff_victim_all)
