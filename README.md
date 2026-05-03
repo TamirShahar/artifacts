@@ -111,7 +111,7 @@ Download the repository as a ZIP archive:
 
 ```bash
 wget https://anonymous.4open.science/api/repo/artifacts_32489asadads1-12321asd-323sad123-08E3/zip -O artifact.zip
-unzip artifact.zip
+unzip artifact.zip -d artifacts
 cd artifacts
 chmod +x ./run.sh
 chmod -R 777 ./victim ./arn
