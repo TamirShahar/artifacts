@@ -223,7 +223,7 @@ Terminal 1 (victim container, `malicious_user`):
 
 Runs the victim-side malicious logic as `malicious_user` in the victim container.
 
-This process detects the victim connection source port, infers the expected ISN using the preprocessing table, and sends the required connection details to the ARN so it can inject forged packets.
+This process detects the victim connection source port, infers the expected ISN using the preprocessing table, and sends the required connection details to the ARN so it can inject forged packets. This process may be somewhat CPU-consuming, but this is the expected behavior.
 
 Terminal 3 (ARN container):
 
