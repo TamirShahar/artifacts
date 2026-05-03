@@ -30,7 +30,7 @@ unsigned char ARN_IP_ARRAY[4] = {192, 0, 2, 49}; // Replace with desired ARN IP
 
 const char *ARN_IP = "192.0.2.49";
 const int ARN_PORT = 9999;
-const int TIMEOUT_SECONDS = 40; // Receive for 40 seconds
+const int TIMEOUT_SECONDS = 60; // Receive for 60 seconds
 const char *CSV_NAME = "tcp_attack/pre_processing/ipoptions/ports_isns_ipoptions_linux.csv";
 
 const int BUFSIZE = 1024;
@@ -413,7 +413,7 @@ int main(int argc, char **argv)
     thread scan_thread(scan, ref(port_isns));
 
     // Wait for both threads to complete
-    // scan_thread.join();
+    scan_thread.join();
     receive_thread.join();
 
     auto t2 = std::chrono::high_resolution_clock::now();

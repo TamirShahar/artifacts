@@ -91,13 +91,9 @@ https://docs.docker.com/engine/install/ubuntu/
 ```bash
 sudo usermod -aG docker $USER
 newgrp docker
-chmod -R 777 ./victim ./arn
 ```
 
-- The first two commands allow running Docker without `sudo`
-- The `chmod` ensures proper access for bind-mounted directories between host and containers
-
-Reboot the system for the changes to take effect.
+These commands allow running Docker without `sudo`
 
 ### Assumptions
 
@@ -109,16 +105,22 @@ We assume default system configuration. In particular, we assume that TCP epheme
 
 ### Download
 
-Download the repository as a ZIP archive from:
+**Dependencies:** `wget`, `unzip` (install via `sudo apt install unzip wget`)
 
-https://anonymous.4open.science/r/artifacts_32489asadads1-12321asd-323sad123-08E3
-
-Extract the archive and enter the artifacts directory:
+Download the repository as a ZIP archive:
 
 ```bash
+wget https://anonymous.4open.science/r/artifacts_32489asadads1-12321asd-323sad123-08E3/zip -O artifact.zip
+unzip artifact.zip
 cd artifacts
 chmod +x ./run.sh
+chmod -R 777 ./victim ./arn
 ```
+
+- `chmod +x ./run.sh` makes the script executable
+- `chmod -R 777 ./victim ./arn` ensures proper access for bind-mounted directories between host and containers.
+
+Reboot the system for the changes to take effect.
 
 ### Build
 
@@ -158,6 +160,16 @@ To see all available commands:
 ./run.sh help
 ```
 
+**Notes:**
+
+- In case of unexpected errors or to reset the environment, run:
+  ```bash
+  ./run.sh stop
+  ./run.sh build
+  ```
+- In general, you do not need to reset between experiments
+- Do not run multiple experiments in parallel
+
 ---
 
 ## Attacks
@@ -181,6 +193,8 @@ port -> ISN, timestamp
 ```
 
 The malicious application uses cBPF leakage to infer ISNs and associate them with source ports and timestamps. This step should take around 5 minutes.
+
+**Note:** You may see error messages for some ports during this phase. This is expected; ports that encounter errors are automatically retried and completed in later iteration.
 
 ---
 
@@ -230,6 +244,8 @@ You should see in terminal 2 (victim container, `victim_user`):
 hello from attacker
 ```
 
+If the attack did not succeed, you will either see the regular `index.html` page or encounter a TCP connection error (indicating the attack disrupted the connection but did not successfully hijack it).
+
 ---
 
 ### Statistics
@@ -243,6 +259,8 @@ Terminal 2 (victim container, `victim_user`):
 Runs the HTTP client `N` times (loop) as `victim_user` in the victim container.
 
 Use this to automatically repeat the attack and observe success rate statistics over multiple runs.
+
+You should observe a success rate close to 100%, consistent with our experimental results, see Table 4 in the paper.
 
 ---
 
@@ -274,7 +292,9 @@ The malicious application sends SYN packets with IP options so they traverse the
 port -> ISN, timestamp
 ```
 
-This step should take around 40 seconds.
+This step should take around 60 seconds.
+
+After Terminal 2 (victim container, `malicious_user`) completes, the preprocessing phase is finished and you can manually terminate Terminal 1 (ARN container).
 
 ### Attack Flow
 
@@ -321,6 +341,8 @@ You should see in terminal 3 (victim container, `victim_user`):
 ```text
 hello from attacker
 ```
+
+You can also run the statistics as described earlier; the success rate should be close to 100%, consistent with Table 4 in the paper.
 
 ---
 
@@ -375,6 +397,8 @@ You should see resolution to:
 6.6.6.X
 ```
 
+Each round, the ARN selects a different random value for `X`, so the attack can be repeated multiple times without flushing the cache.
+
 ---
 
 ### Statistics
@@ -388,6 +412,8 @@ Terminal 3 (victim container, `malicious_user`):
 Runs the DNS cache poisoning logic `N` times (loop) as `malicious_user` in the victim container.
 
 Use this to automatically repeat the attack and observe success rate statistics over multiple runs.
+
+You should observe a success rate around 95%, which is consistent with the results reported in Table 5 in the paper.
 
 **Note:** This code runs as `malicious_user` in the victim container. A run is considered successful if a DNS query from `malicious_user` resolves the domain to the forged IP injected by the ARN. Ideally, verification would be performed from `victim_user`; however, since the DNS cache is shared between users, poisoning it via `malicious_user` also affects `victim_user`, making this a valid indication of success. This criterion is used only for statistics; the manual experiment above provides the accurate validation of the attack.
 
