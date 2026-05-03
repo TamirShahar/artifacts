@@ -110,7 +110,7 @@ We assume default system configuration. In particular, we assume that TCP epheme
 Download the repository as a ZIP archive:
 
 ```bash
-wget https://anonymous.4open.science/r/artifacts_32489asadads1-12321asd-323sad123-08E3/zip -O artifact.zip
+wget https://anonymous.4open.science/api/repo/artifacts_32489asadads1-12321asd-323sad123-08E3/zip -O artifact.zip
 unzip artifact.zip
 cd artifacts
 chmod +x ./run.sh
@@ -260,7 +260,7 @@ Runs the HTTP client `N` times (loop) as `victim_user` in the victim container.
 
 Use this to automatically repeat the attack and observe success rate statistics over multiple runs.
 
-You should observe a success rate close to 100%, consistent with our experimental results, see Table 4 in the paper.
+You should observe a success rate close to 100%, consistent with our experimental results, see Table 4 in the paper, line 1.
 
 ---
 
@@ -342,7 +342,7 @@ You should see in terminal 3 (victim container, `victim_user`):
 hello from attacker
 ```
 
-You can also run the statistics as described earlier; the success rate should be close to 100%, consistent with Table 4 in the paper.
+You can also run the statistics as described earlier; the success rate should be close to 100%, consistent with Table 4 in the paper, line 3.
 
 ---
 
@@ -413,7 +413,7 @@ Runs the DNS cache poisoning logic `N` times (loop) as `malicious_user` in the v
 
 Use this to automatically repeat the attack and observe success rate statistics over multiple runs.
 
-You should observe a success rate around 95%, which is consistent with the results reported in Table 5 in the paper.
+You should observe a success rate around 95%, which is consistent with the results reported in Table 5 in the paper, line 1.
 
 **Note:** This code runs as `malicious_user` in the victim container. A run is considered successful if a DNS query from `malicious_user` resolves the domain to the forged IP injected by the ARN. Ideally, verification would be performed from `victim_user`; however, since the DNS cache is shared between users, poisoning it via `malicious_user` also affects `victim_user`, making this a valid indication of success. This criterion is used only for statistics; the manual experiment above provides the accurate validation of the attack.
 
