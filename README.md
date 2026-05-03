@@ -60,7 +60,7 @@ These requirements apply to the **host machine** (not the containers).
 - Docker Engine 29.4.1
 - systemd-resolved (systemd DNS stub resolver) 255
 
-**Note:** Other versions will likely work, but correct behavior is not guaranteed.
+**Note:** Other versions will likely work, but correct behavior is not guaranteed. In particular, Linux kernel versions released prior to April 2026 should theoretically work, and we recommend trying those first.
 
 ### Kernel
 
@@ -97,7 +97,9 @@ These commands allow running Docker without `sudo`
 
 ### Assumptions
 
-We assume default system configuration. In particular, we assume that TCP ephemeral ports are assigned in the range `32768–60999`, and that only even ports are selected when using `connect()`. This behavior matches the default configuration and is used to reduce preprocessing time.
+We assume a default system configuration. In particular, we assume that TCP ephemeral ports are assigned in the default range `32768–60999`.
+
+To reduce preprocessing time, we also rely on the observation that when using `connect()`, the assigned source ports follow a fixed parity (even or odd, depending on the lower bound of the ephemeral range; by default, even). This behavior can be observed from the source port allocation logic in the Linux kernel, see: https://github.com/torvalds/linux/blob/master/net/ipv4/inet_hashtables.c (function `__inet_hash_connect`).
 
 ---
 
@@ -128,6 +130,8 @@ Reboot the system for the changes to take effect.
 ./run.sh build
 ```
 
+Run this command from the `artifacts` folder.
+
 Builds the Docker images and starts all containers using `docker compose up`.
 
 This command:
@@ -142,7 +146,7 @@ To run the experiments, we use multiple terminals on the host machine. Each term
 
 To simplify running the experiments across the different containers, we provide a `run.sh` script that wraps all required Docker commands.
 
-All commands are executed via:
+All commands are executed via (from the `artifacts` folder):
 
 ```bash
 ./run.sh COMMAND
@@ -167,7 +171,7 @@ To see all available commands:
   ./run.sh stop
   ./run.sh build
   ```
-- In general, you do not need to reset between experiments
+- In general, you do not need to reset between experiments (simply terminating the terminals with `Ctrl+C` is sufficient)
 - Do not run multiple experiments in parallel
 
 ---
@@ -413,7 +417,7 @@ Runs the DNS cache poisoning logic `N` times (loop) as `malicious_user` in the v
 
 Use this to automatically repeat the attack and observe success rate statistics over multiple runs.
 
-You should observe a success rate around 95%, which is consistent with the results reported in Table 5 in the paper, line 1.
+You should observe a success rate close to 100%, which is consistent with the results reported in Table 5 in the paper, line 1. If you observe lower rates, this is likely due to hardware differences.
 
 **Note:** This code runs as `malicious_user` in the victim container. A run is considered successful if a DNS query from `malicious_user` resolves the domain to the forged IP injected by the ARN. Ideally, verification would be performed from `victim_user`; however, since the DNS cache is shared between users, poisoning it via `malicious_user` also affects `victim_user`, making this a valid indication of success. This criterion is used only for statistics; the manual experiment above provides the accurate validation of the attack.
 
